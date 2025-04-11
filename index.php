@@ -12,6 +12,48 @@
         <input type="submit" name="tlacidlo" value="Prihlásiť"> <br>
     </form>
 
+    <?php
+        if(isset($_POST["tlacidlo"])) {
+            if(isset($_POST["meno"]) && isset($_POST["heslo"])) {
+                $server = "localhost";
+                $login = "root";
+                $password = "vertrigo";
+                $name_db = "registracia";
+                
+                $connection = mysqli_connect($server, $login, $password, $name_db);
+
+                $meno = $_POST["meno"];
+                $meno = mysqli_real_escape_string($connection, $meno);
+                $heslo = $_POST["heslo"];
+                $heslo = mysqli_real_escape_string($connection, $heslo);
+
+                $dotaz = "SELECT * FROM persons WHERE userName = '$meno'";
+                $prijem = mysqli_query($connection, $dotaz);
+
+                $pocetRiadkov = mysqli_num_rows($prijem);
+
+                if($pocetRiadkov < 1) {
+                    die("Užívateľ s týmto menom neexistuje");
+                }
+                else {
+                    $riadok = mysqli_fetch_assoc($prijem);
+                    $hashHeslo = $riadok["passwd"];
+                    if(!password_verify($heslo, $hashHeslo)) {
+                        die("Nespravne heslo");
+                    }
+                    else {
+                        echo "Ste prihlasený";
+                    }
+
+
+                }
+
+            }
+        }
+
+
+    ?>
+
 
 
     
