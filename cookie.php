@@ -15,5 +15,14 @@
 <body>
     <h1>Učíme sa posielať cookie</h1>
 
+    <?php
+        if(isset($_COOKIE["kolacik"])) {
+            echo $_COOKIE["kolacik"];
+        }
+    ?>
+
+
+
+
 </body>
 </html>
